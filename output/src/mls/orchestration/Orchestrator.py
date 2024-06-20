@@ -2,7 +2,7 @@ from mls.orchestration import Step, Out, In
 
 class Orchestrator(Step):
     def __init__(self, **inputs):
-        super.__init__()
+        super().__init__()
         self.steps = []
         self.inputs = inputs
     
@@ -14,10 +14,9 @@ class Orchestrator(Step):
         for step in self.steps:
             if (type(step) == In):
                 origin, port = self.inputs[step.key]
-                step.inputs[step.key] = \
-                    origin.outputs[port]
+                step.set(step.key, origin.get(port))
 
             step.execute()
             if (type(step) == Out):
-                val = step.outputs[step.key]
+                val = step.get(step.key)
                 self.outputs[step.key] = val

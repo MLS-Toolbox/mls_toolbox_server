@@ -4,7 +4,7 @@ from mls.loaders import *
 
 class LoadDataset(IDataAcquisition):
     def __init__(self, path : str, loader : str):
-        super.__init__(self),
+        super().__init__(),
         termination = path.split(".")[-1]
         self.loader = self.getLoaderFromTermination(termination)
         self.path = path

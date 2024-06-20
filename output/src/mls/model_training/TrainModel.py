@@ -2,7 +2,7 @@ from mls.model_training import IModelTraining
 
 class TrainModel(IModelTraining):
     def __init__(self, epochs : int, bach_size : int, features, truth, optimizer, model) -> None:
-        super.__init__(self)
+        super().__init__()
 
         self.epochs = epochs
         self.bach_size = bach_size

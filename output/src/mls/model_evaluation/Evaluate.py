@@ -2,7 +2,7 @@ from mls.model_evaluation import IModelEvaluation
 
 class Evaluate(IModelEvaluation):
     def __init__(self, model, x_test, y_test):
-        super.__init__(self)
+        super().__init__()
 
         self.model = model
         self.x_test = x_test
