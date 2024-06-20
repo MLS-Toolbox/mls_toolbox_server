@@ -1,0 +1,16 @@
+stages:
+  data_acquisition:
+    deps: []
+  data_pre_processing:
+    deps:
+    - ./src/data_acquisition.py
+  data_transformation:
+    deps:
+    - ./src/data_pre_processing.py
+  evaluation:
+    deps:
+    - ./src/train.py
+    - ./src/data_transformation.py
+  train:
+    deps:
+    - ./src/data_transformation.py
