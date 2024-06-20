@@ -8,7 +8,7 @@ class Evaluate(IModelEvaluation):
         self.x_test = x_test
         self.y_test = y_test
     
-    def exec(self):
+    def execute(self):
         model_origin, port = self.model
         model = model_origin.outputs[port]
         x_test_origin, port = self.x_test

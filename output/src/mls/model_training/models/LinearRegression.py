@@ -6,5 +6,5 @@ class LinarRegression(IModelStep):
         self.parameters = parameters
         super.__init__(self)
 
-    def exec(self):
+    def execute(self):
         self.outputs["model"] = LinearRegression()

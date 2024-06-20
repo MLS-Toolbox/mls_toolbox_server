@@ -4,13 +4,14 @@ from flask_cors import cross_origin
 import os
 import shutil
 import json
-
+from fix_editor import fix_editor
 app = Flask(__name__)
 
 @app.route('/api/create_app', methods=['GET', 'POST'])
 @cross_origin()
 def add_message():
     content = request.json
+    content = fix_editor(content)
     nodes_config_path = 'nodes.json'
     nodes_config = json.load(open(nodes_config_path))
     availableNodes = NodesLoader(content = nodes_config['nodes'])

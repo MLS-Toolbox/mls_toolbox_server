@@ -3,12 +3,12 @@ from sklearn.model_selection import train_test_split
 from mls.data_acquisition import DataFrame
 class SplitTrainTest(IDataTransformation):
     def __init__(self, train_percentage : float, features, truth):
-        super().__init__(self)
+        super().__init__()
         self.train_percentage = train_percentage
         self.features = features
         self.truth = truth
         
-    def exec(self):
+    def execute(self):
         features_origin, port = self.features
         features_dataframe= features_origin.outputs[port]
         features_data = features_dataframe.getData()

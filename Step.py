@@ -3,7 +3,7 @@ class Step:
     def __init__(self):
         self.inputs = dict()
         self.outputs = dict()
-    def exec(self):
+    def execute(self):
         pass
 
 class Select(Step):

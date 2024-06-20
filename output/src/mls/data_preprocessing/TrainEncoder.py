@@ -2,12 +2,12 @@ from mls.data_preprocessing import IDataPreprocessing
 
 class TrainEncoder(IDataPreprocessing):
     def __init__(self, columns, data, encoder):
-        super().__init__(self)
+        super().__init__()
         self.columns = columns
         self.data = data
         self.encoder = encoder
 
-    def exec(self):
+    def execute(self):
         data_origin, port = self.data
         dataframe = data_origin.outputs[port]
         data = dataframe.getData()

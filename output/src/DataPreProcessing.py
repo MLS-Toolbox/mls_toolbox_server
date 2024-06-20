@@ -6,7 +6,7 @@ from mls.scalers import Standard
 
 class DataPreProcessing(Orchestrator):
 	def __init__(self, **kwargs):
-		super.__init__(self)
+		super.__init__(**kwargs)
 		o = Orchestrator()
 		
 		input = In(

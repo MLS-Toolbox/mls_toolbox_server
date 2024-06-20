@@ -2,12 +2,12 @@ from mls.data_preprocessing import IDataPreprocessing
 
 class TrainScaler(IDataPreprocessing):
     def __init__(self, columns, data, scaler):
-        super().__init__(self)
+        super().__init__()
         self.columns = columns
         self.data = data
         self.scaler = scaler
 
-    def exec(self):
+    def execute(self):
         data_origin, port = self.data
         dataframe = data_origin.outputs[port]
         data = dataframe.getData()

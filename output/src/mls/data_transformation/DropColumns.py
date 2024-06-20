@@ -2,11 +2,11 @@ from mls.data_transformation import IDataTransformation
 
 class DropColumns(IDataTransformation):
     def __init__(self, columns, origin):
-        super().__init__(self)
+        super().__init__()
         self.columns = columns
         self.origin = origin
 
-    def exec(self):
+    def execute(self):
         origin, port = self.origin
         dataframe = origin.outputs[port]
         data = dataframe.getData()

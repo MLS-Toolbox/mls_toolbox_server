@@ -6,5 +6,5 @@ class Out(Step):
         self.key = key
         self.origin, self.port = value
     
-    def exec(self):
+    def execute(self):
         self.outputs[self.key] = self.origin.outputs[self.port]

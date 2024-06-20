@@ -11,7 +11,7 @@ class TrainModel(IModelTraining):
         self.optimizer = optimizer
         self.model = model
 
-    def exec(self):
+    def execute(self):
         model_origin, port = self.model
         model = model_origin.outputs[port]
         optimizer_origin, port = self.optimizer

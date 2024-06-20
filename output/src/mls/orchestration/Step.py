@@ -4,7 +4,7 @@ class Step:
         self.outuputs = dict()
         pass
 
-    def exec(self):
+    def execute(self):
         print("Executed abstract Step")
         pass
 

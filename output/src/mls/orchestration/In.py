@@ -5,5 +5,5 @@ class In(Step):
         super.__init__(self)
         self.key = key
     
-    def exec(self):
+    def execute(self):
         pass

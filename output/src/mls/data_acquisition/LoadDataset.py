@@ -8,7 +8,7 @@ class LoadDataset(IDataAcquisition):
         termination = path.split(".")[-1]
         self.loader = self.getLoaderFromTermination(termination)
         self.path = path
-    def exec(self):
+    def execute(self):
         data = DataFrame(
             loader = self.loader,
             path = self.path 

@@ -3,7 +3,7 @@ from mls.model_evaluation import Evaluate
 
 class Evaluation(Orchestrator):
 	def __init__(self, **kwargs):
-		super.__init__(self)
+		super.__init__(**kwargs)
 		o = Orchestrator()
 		
 		input = In(

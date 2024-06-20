@@ -1,5 +1,6 @@
 import numpy as np
 from mls.scalers import IScaler
+
 class Scaler(IScaler):
     def __init__(self, scaler) -> None:
         """
@@ -12,7 +13,7 @@ class Scaler(IScaler):
         Returns:
             None
         """
-        super().__init__(self)
+        super().__init__()
         self.scaler = scaler
         self.column = None
         pass
