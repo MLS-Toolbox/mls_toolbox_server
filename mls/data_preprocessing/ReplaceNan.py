@@ -7,6 +7,6 @@ class ReplaceNan(IDataPreprocessing):
 
     def execute(self):
         origin, port = self.origin
-        data = origin.outputs[port].data
+        data = origin.get(port).data
         data = data.fillna(self.value)
         self.outputs["result"] = data

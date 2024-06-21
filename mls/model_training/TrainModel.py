@@ -13,15 +13,15 @@ class TrainModel(IModelTraining):
 
     def execute(self):
         model_origin, port = self.model
-        model = model_origin.outputs[port]
+        model = model_origin.get(port)
         optimizer_origin, port = self.optimizer
-        optimizer = optimizer_origin.outputs[port]
+        optimizer = optimizer_origin.get(port)
 
         features_origin, port = self.features
-        features = features_origin.outputs[port]
+        features = features_origin.get(port)
 
         truth_origin, port = self.truth
-        truth = truth_origin.outputs[port]
+        truth = truth_origin.get(port)
 
         model.fit(features, truth, epochs=self.epochs, batch_size=self.bach_size, optimizer=optimizer)
 

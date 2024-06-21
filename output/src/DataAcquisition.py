@@ -3,7 +3,7 @@ from mls.orchestration import Out, Orchestrator
 
 class DataAcquisition(Orchestrator):
 	def __init__(self, **kwargs):
-		super.__init__(**kwargs)
+		super().__init__(**kwargs)
 	def execute(self):
 		load_dataset = LoadDataset(
 			path = 'iris.csv',
@@ -17,3 +17,4 @@ class DataAcquisition(Orchestrator):
 		
 		self.add([load_dataset,output])
 		super().execute()
+		

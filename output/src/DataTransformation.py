@@ -1,11 +1,10 @@
-from mls.orchestration import Out, In, StepManager, Orchestrator
+from mls.orchestration import StepManager, Out, In, Orchestrator
 from mls.data_transformation import SelectColumns, SplitTrainTest
 
 class DataTransformation(Orchestrator):
 	def __init__(self, **kwargs):
-		super.__init__(**kwargs)
-		o = Orchestrator()
-		
+		super().__init__(**kwargs)
+	def execute(self):
 		input = In(
 			key = 'data',
 		)
@@ -46,5 +45,6 @@ class DataTransformation(Orchestrator):
 			value = (split_train_test, 'truth_test'),
 		)
 		
-		o.add([input,select_columns,select_columns_2,split_train_test,output,output_2,output_3,output_4])
+		self.add([input,select_columns,select_columns_2,split_train_test,output,output_2,output_3,output_4])
+		super().execute()
 		

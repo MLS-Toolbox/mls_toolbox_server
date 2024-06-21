@@ -8,7 +8,7 @@ class DropColumns(IDataTransformation):
 
     def execute(self):
         origin, port = self.origin
-        dataframe = origin.outputs[port]
+        dataframe = origin.get(port)
         data = dataframe.getData()
         data = data.drop(self.columns, axis=1)
         dataframe.setData(data)

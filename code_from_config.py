@@ -196,7 +196,6 @@ class Module:
 	def generateCode(self):
 		print("Generating code for module: ", self.name)
 		code = ""
-		code = "o = Orchestrator()\n\n"
 		copy_nodes = self.nodes.copy()
 		node_count = dict()
 		node_dependencies = []
@@ -223,7 +222,8 @@ class Module:
 					for target, target_port in node.sources[p]:
 						target.pastDependency(target, target_port)
 				break
-		code += "o.add([" + ",".join(node_dependencies) + "])\n"
+		code += "self.add([" + ",".join(node_dependencies) + "])\n"
+		code += "super().execute()\n"
 		return code
 	def getDependenciesCode(self):
 		dependencies = dict()
@@ -317,20 +317,20 @@ class ModuleHandler:
 			for node in module.nodes:
 				node.parent = module
 
-	def generateCode(self):
+	def generatePackageCode(self):
 		root = self.all_modules['root']
 		packages = root.nodes
-		dvc_config = dict()
 
 		for package in packages:
 			c_package = self.all_modules[package.id]
-			package_name = c_package.name
 
 			code = c_package.getDependenciesCode()
 			code += "\n"
 			code += "class " + c_package.rName +"(Orchestrator):\n"
 			code += "\tdef __init__(self, **kwargs):\n"
-			code += "\t\tsuper.__init__(**kwargs)\n"
+			code += "\t\tsuper().__init__(**kwargs)\n"
+			code += "\tdef execute(self):\n"
+
 
 			for j in c_package.generateCode().split("\n"):
 				code += "\t\t" + j + "\n"
@@ -339,8 +339,6 @@ class ModuleHandler:
 			file = open(file_path, "w")
 			file.write(code)
 			file.close()
-
-			# dvc_config[package_name] = {'deps' : []} ## FIXME: c_package.getDvcConfig())
 			
 			this_package_node = self.all_nodes[package.id]
 			modules_id_i_depend_on = set()
@@ -348,11 +346,54 @@ class ModuleHandler:
 			for source in this_package_node.dependencies:
 				modules_id_i_depend_on.add(source[0].id)
 
-			for module_id in modules_id_i_depend_on:
-				package_i_depend_on = self.all_modules[module_id].name
-				#dvc_config[package_name]['deps'].append("./src/" + package_i_depend_on + ".py")
+	def generateMainCode(self):
+		root = self.all_modules['root']
+		packages = root.nodes
+		code = "from mls.orchestration import Orchestrator\n"
 
-		#yaml.dump({"stages": dvc_config}, open("./output/dvc.yaml", "w"))
+
+		for package in packages:
+			c_package = self.all_modules[package.id]
+			code += "from . " + c_package.rName + " import " + c_package.rName + "\n"
+
+		code += "\n"
+		code += "def main():\n"
+		code += "\troot = Orchestrator()\n"
+		variable_names = []
+
+		copy_nodes = packages.copy()
+		node_dependencies = []
+		while(len(copy_nodes) > 0):
+			for node in copy_nodes:
+				c_package = self.all_modules[node.id]
+				if not node.isReady():
+					continue
+				variable_name = c_package.name
+				node.variable_name = variable_name
+				variable_names.append(variable_name)
+				node.origin_label = c_package.rName
+				node.params = dict()
+				code += "\t" + "\n\t".join(node.generateCode().split("\n"))
+				node_dependencies.append(variable_name)
+				code += "\n"
+				copy_nodes.remove(node)
+				for p in node.sources:
+					for target, target_port in node.sources[p]:
+						target.pastDependency(target, target_port)
+				break
+
+		code += "\troot.add([\n\t\t" + ",\n\t\t".join(variable_names) + "\n\t])\n\n"
+		code += "\troot.execute()\n"
+
+		file_path = "./output/src/main.py"
+
+		file = open(file_path, "w")
+		file.write(code)
+		file.close()
+
+	def generateCode(self):
+		self.generatePackageCode()
+		self.generateMainCode()
 
 class NodesLoader:
 	def __init__(self, content):

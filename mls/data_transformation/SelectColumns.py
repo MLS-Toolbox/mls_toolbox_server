@@ -8,7 +8,7 @@ class SelectColumns(IDataTransformation):
 
     def execute(self):
         origin, port = self.origin
-        dataframe = origin.outputs[port]
+        dataframe = origin.get(port)
         data = dataframe.getData()
 
         data = data[self.columns]

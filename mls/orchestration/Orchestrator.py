@@ -10,6 +10,9 @@ class Orchestrator(Step):
         for step in steps:
             self.steps.append(step)
     
+    def clear(self):
+        self.steps = []
+    
     def execute(self):
         for step in self.steps:
             if (type(step) == In):

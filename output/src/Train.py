@@ -5,9 +5,8 @@ from mls.model_training.models import LinearRegression
 
 class Train(Orchestrator):
 	def __init__(self, **kwargs):
-		super.__init__(**kwargs)
-		o = Orchestrator()
-		
+		super().__init__(**kwargs)
+	def execute(self):
 		input = In(
 			key = 'features',
 		)
@@ -38,5 +37,6 @@ class Train(Orchestrator):
 			value = (train_model, 'model'),
 		)
 		
-		o.add([input,input_2,optimizer,mlmodel,train_model,output])
+		self.add([input,input_2,optimizer,mlmodel,train_model,output])
+		super().execute()
 		

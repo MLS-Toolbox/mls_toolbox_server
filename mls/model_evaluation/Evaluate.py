@@ -10,11 +10,11 @@ class Evaluate(IModelEvaluation):
     
     def execute(self):
         model_origin, port = self.model
-        model = model_origin.outputs[port]
+        model = model_origin.get(port)
         x_test_origin, port = self.x_test
-        x_test = x_test_origin.outputs[port]
+        x_test = x_test_origin.get(port)
         y_test_origin, port = self.y_test
-        y_test = y_test_origin.outputs[port]
+        y_test = y_test_origin.get(port)
 
         result = model.evaluate(x_test, y_test)
 

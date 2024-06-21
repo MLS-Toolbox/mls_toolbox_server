@@ -3,9 +3,8 @@ from mls.model_evaluation import Evaluate
 
 class Evaluation(Orchestrator):
 	def __init__(self, **kwargs):
-		super.__init__(**kwargs)
-		o = Orchestrator()
-		
+		super().__init__(**kwargs)
+	def execute(self):
 		input = In(
 			key = 'model',
 		)
@@ -29,5 +28,6 @@ class Evaluation(Orchestrator):
 			value = (evaluate, 'result'),
 		)
 		
-		o.add([input,input_2,input_3,evaluate,output])
+		self.add([input,input_2,input_3,evaluate,output])
+		super().execute()
 		

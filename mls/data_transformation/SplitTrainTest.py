@@ -10,11 +10,11 @@ class SplitTrainTest(IDataTransformation):
         
     def execute(self):
         features_origin, port = self.features
-        features_dataframe= features_origin.outputs[port]
+        features_dataframe= features_origin.get(port)
         features_data = features_dataframe.getData()
 
         truth_origin, port = self.truth
-        truth_dataframe = truth_origin.outputs[port]
+        truth_dataframe = truth_origin.get(port)
         truth_data = truth_dataframe.getData()
 
         x_train, x_test, y_train, y_test = train_test_split(features_data, truth_data, train_size = self.train_percentage)

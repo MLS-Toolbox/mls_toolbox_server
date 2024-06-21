@@ -9,11 +9,11 @@ class TrainScaler(IDataPreprocessing):
 
     def execute(self):
         data_origin, port = self.data
-        dataframe = data_origin.outputs[port]
+        dataframe = data_origin.get(port)
         data = dataframe.getData()
 
         scaler_origin, port = self.scaler
-        scaler = scaler_origin.outputs[port]
+        scaler = scaler_origin.get(port)
 
         scaler.fit_transform(data, self.columns)
         dataframe.setData(data)

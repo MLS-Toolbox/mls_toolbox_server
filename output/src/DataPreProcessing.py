@@ -1,14 +1,13 @@
 from mls.orchestration import Out, In, Orchestrator
-from mls.data_preprocessing import TrainEncoder, TrainScaler, ReplaceNan
+from mls.data_preprocessing import TrainScaler, ReplaceNan, TrainEncoder
 from mls.data_transformation import DropColumns
 from mls.encoders import OneHotEncoder
 from mls.scalers import Standard
 
 class DataPreProcessing(Orchestrator):
 	def __init__(self, **kwargs):
-		super.__init__(**kwargs)
-		o = Orchestrator()
-		
+		super().__init__(**kwargs)
+	def execute(self):
 		input = In(
 			key = 'dataset',
 		)
@@ -58,5 +57,6 @@ class DataPreProcessing(Orchestrator):
 			value = (trainencoder, 'encoder'),
 		)
 		
-		o.add([input,replace_nan,drop_columns,encoder,scaler,trainencoder,trainscaler,output,output_2,output_3])
+		self.add([input,replace_nan,drop_columns,encoder,scaler,trainencoder,trainscaler,output,output_2,output_3])
+		super().execute()
 		
