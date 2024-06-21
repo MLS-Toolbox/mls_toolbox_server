@@ -264,11 +264,12 @@ class Module:
 		return dvc_config
 
 class ModuleHandler:
-	def __init__(self, content, nodes):
+	def __init__(self, content, nodes, write_path  = "./output/src"):
 		self.content = content
 		self.all_modules = dict()
 		self.all_nodes = dict()
 		self.available_nodes = nodes
+		self.write_path = write_path
 
 		## Creating all the modules
 		for module in self.content:
@@ -335,7 +336,7 @@ class ModuleHandler:
 			for j in c_package.generateCode().split("\n"):
 				code += "\t\t" + j + "\n"
 
-			file_path = "./output/src/" + c_package.rName + ".py"
+			file_path = self.write_path + "/" + c_package.rName + ".py"
 			file = open(file_path, "w")
 			file.write(code)
 			file.close()
@@ -385,7 +386,7 @@ class ModuleHandler:
 		code += "\troot.add([\n\t\t" + ",\n\t\t".join(variable_names) + "\n\t])\n\n"
 		code += "\troot.execute()\n"
 
-		file_path = "./output/src/main.py"
+		file_path = self.write_path + "/main.py"
 
 		file = open(file_path, "w")
 		file.write(code)

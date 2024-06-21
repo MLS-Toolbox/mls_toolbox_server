@@ -5,6 +5,7 @@ import os
 import shutil
 import json
 from fix_editor import fix_editor
+import uuid
 app = Flask(__name__)
 
 @app.route('/api/create_app', methods=['GET', 'POST'])
@@ -15,39 +16,28 @@ def add_message():
     nodes_config_path = 'nodes.json'
     nodes_config = json.load(open(nodes_config_path))
     availableNodes = NodesLoader(content = nodes_config['nodes'])
-    module = ModuleHandler(content = content, nodes = availableNodes.getNodes())
-    
-    # remove files from previous run
-
-    folder = './output/src'
-    for filename in os.listdir(folder):
-        file_path = os.path.join(folder, filename)
-        try:
-            if os.path.isfile(file_path):
-                os.unlink(file_path)
-        except Exception as e:
-            print('Failed to delete %s. Reason: %s' % (file_path, e))
-    if os.path.exists('./output/dvc.yaml'):
-        os.unlink('./output/dvc.yaml')
+    # generate random path for this request
+    path_head = './'+ str(uuid.uuid4())
+    path = path_head + '/src'
+    os.mkdir(path_head)
+    os.mkdir(path)
+    module = ModuleHandler(content = content, nodes = availableNodes.getNodes(),write_path = path)
 
     module.generateCode()
 
-    shutil.make_archive('./output', 'zip', './output')
+    # copy mls folder into path
+    shutil.copytree('mls', path+'/mls')
 
-    folder = './output/src'
-    for filename in os.listdir(folder):
-        file_path = os.path.join(folder, filename)
-        try:
-            if os.path.isfile(file_path):
-                os.unlink(file_path)
-        except Exception as e:
-            print('Failed to delete %s. Reason: %s' % (file_path, e))
-    os.unlink('./output/dvc.yaml')
+    shutil.make_archive(path_head, 'zip', path_head)
     
 
-    file = open('./output.zip', 'rb')
+    file = open(path_head+'.zip', 'rb')
     data = file.read()
     file.close()
+    
+    os.remove(path_head+'.zip')
+    shutil.rmtree(path_head)
+
     return data
 
 if __name__ == '__main__':
