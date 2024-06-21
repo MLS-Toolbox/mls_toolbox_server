@@ -41,7 +41,9 @@ def add_message():
     return data
 
 if __name__ == '__main__':
-    from flask_cors import CORS
-    CORS(app, supports_credentials=True, origins=['*'])
-    app.run(host= '0.0.0.0',debug=True)
-    app.config["CORS_HEADERS"] = ["Content-Type", "X-Requested-With", "X-CSRFToken"]
+    from waitress import serve
+    serve(app, host="0.0.0.0", port=5000)
+    #from flask_cors import CORS
+    #CORS(app, supports_credentials=True, origins=['*'])
+    #app.run(host= '0.0.0.0',debug=True)
+    #app.config["CORS_HEADERS"] = ["Content-Type", "X-Requested-With", "X-CSRFToken"]

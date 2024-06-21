@@ -8,4 +8,6 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 
 COPY . /app
 
-CMD ["flask", "--app" , "server.py", "--no-debug","run"]
+EXPOSE 5000
+ENTRYPOINT [ "python3" ]
+CMD ["server.py"]
