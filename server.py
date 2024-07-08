@@ -40,6 +40,11 @@ def add_message():
 
     return data
 
+@app.route('/', methods=['GET', 'POST'])
+@cross_origin()
+def home():
+    return 'hello'
+
 if __name__ == '__main__':
     from flask_cors import CORS
     CORS(app, supports_credentials=True, origins=['*'])
