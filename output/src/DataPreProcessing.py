@@ -1,62 +1,84 @@
-from mls.orchestration import Out, In, Orchestrator
+from mls.orchestration import Step, Out, In, Orchestrator
 from mls.data_preprocessing import TrainScaler, ReplaceNan, TrainEncoder
 from mls.data_transformation import DropColumns
 from mls.encoders import OneHotEncoder
 from mls.scalers import Standard
 
-class DataPreProcessing(Orchestrator):
+class DataPreProcessing(Step):
 	def __init__(self, **kwargs):
 		super().__init__(**kwargs)
-	def execute(self):
+		self.orchestrator = Orchestrator()
 		input = In(
 			key = 'dataset',
 		)
+		self.orchestrator.add(input)
 		
 		replace_nan = ReplaceNan(
+			# 
+			description = '',
 			value = '',
 			origin = (input, 'value'),
 		)
+		self.orchestrator.add(replace_nan)
 		
 		drop_columns = DropColumns(
+			# 
+			description = '',
 			columns = 'ID_x',
 			origin_table = (replace_nan, 'result'),
 		)
+		self.orchestrator.add(drop_columns)
 		
 		encoder = OneHotEncoder(
+			# 
+			description = '',
 			parmeters = '',
 		)
+		self.orchestrator.add(encoder)
 		
 		scaler = Standard(
+			# 
+			description = '',
 			parmeters = '',
 		)
+		self.orchestrator.add(scaler)
 		
 		trainencoder = TrainEncoder(
+			# 
+			description = '',
 			columns = '',
 			encoder = (encoder, 'encoder'),
 			data = (drop_columns, 'resulting_table'),
 		)
+		self.orchestrator.add(trainencoder)
 		
 		trainscaler = TrainScaler(
+			# 
+			description = '',
 			columns = '',
 			data = (trainencoder, 'out'),
 			scaler = (scaler, 'scaler'),
 		)
+		self.orchestrator.add(trainscaler)
 		
 		output = Out(
 			key = 'data',
 			value = (trainscaler, 'data'),
 		)
+		self.orchestrator.add(output)
 		
 		output_2 = Out(
 			key = 'scaler',
 			value = (trainscaler, 'scaler'),
 		)
+		self.orchestrator.add(output_2)
 		
 		output_3 = Out(
 			key = 'encoder',
 			value = (trainencoder, 'encoder'),
 		)
+		self.orchestrator.add(output_3)
 		
-		self.add([input,replace_nan,drop_columns,encoder,scaler,trainencoder,trainscaler,output,output_2,output_3])
-		super().execute()
 		
+	def execute(self):
+		self.orchestrator.execute()

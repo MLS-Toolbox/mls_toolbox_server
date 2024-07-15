@@ -36,6 +36,7 @@ class Node:
 			self.origin_label = self.origin["custom"]
 		elif "parameter" in self.origin:
 			self.origin_label = self.params[self.origin["parameter"]]["value"]
+
 	def setParent(self, parent):
 		self.parent = parent
 
@@ -92,7 +93,7 @@ class Node:
 		final_code += self.variable_name + " = " + self.origin_label + "(\n"
 		for param in self.params:
 			if param == "description":
-				continue
+				final_code += "\t# " + str(self.getParam(param)) + "\n"
 			if ( "parameter" in self.origin ) and ( param == self.origin["parameter"] ):
 				continue
 			final_code += "\t" + param + " = '" + str(self.getParam(param)) + "',\n"
@@ -215,6 +216,7 @@ class Module:
 					variable_name += "_" + str(node_count[node.nodeName])
 				node.variable_name = variable_name
 				code += node.generateCode()
+				code += "self.orchestrator.add(" + variable_name + ")\n"
 				node_dependencies.append(variable_name)
 				code += "\n"
 				copy_nodes.remove(node)
@@ -222,8 +224,7 @@ class Module:
 					for target, target_port in node.sources[p]:
 						target.pastDependency(target, target_port)
 				break
-		code += "self.add([" + ",".join(node_dependencies) + "])\n"
-		code += "super().execute()\n"
+
 		return code
 	def getDependenciesCode(self):
 		dependencies = dict()
@@ -237,6 +238,7 @@ class Module:
 		code = ""
 		if "orchestration" not in dependencies:
 			dependencies["orchestration"] = set()
+		dependencies["orchestration"].add("Step")
 		dependencies["orchestration"].add("Orchestrator")
 		for dep in dependencies.keys():
 			code += "from mls." + dep + " import " + ", ".join(dependencies[dep]) + "\n"
@@ -327,14 +329,18 @@ class ModuleHandler:
 
 			code = c_package.getDependenciesCode()
 			code += "\n"
-			code += "class " + c_package.rName +"(Orchestrator):\n"
+			code += "class " + c_package.rName +"(Step):\n"
 			code += "\tdef __init__(self, **kwargs):\n"
 			code += "\t\tsuper().__init__(**kwargs)\n"
-			code += "\tdef execute(self):\n"
+			
+			code += "\t\tself.orchestrator = Orchestrator()\n"
 
-
-			for j in c_package.generateCode().split("\n"):
+			package_code = c_package.generateCode() 
+			for j in package_code.split("\n"):
 				code += "\t\t" + j + "\n"
+
+			code += "\tdef execute(self):\n"
+			code += "\t\tself.orchestrator.execute()\n"
 
 			file_path = self.write_path + "/" + c_package.rName + ".py"
 			file = open(file_path, "w")
@@ -360,7 +366,6 @@ class ModuleHandler:
 		code += "\n"
 		code += "def main():\n"
 		code += "\troot = Orchestrator()\n"
-		variable_names = []
 
 		copy_nodes = packages.copy()
 		node_dependencies = []
@@ -371,10 +376,10 @@ class ModuleHandler:
 					continue
 				variable_name = c_package.name
 				node.variable_name = variable_name
-				variable_names.append(variable_name)
 				node.origin_label = c_package.rName
 				node.params = dict()
 				code += "\t" + "\n\t".join(node.generateCode().split("\n"))
+				code += "root.add(" + variable_name + ")\n"
 				node_dependencies.append(variable_name)
 				code += "\n"
 				copy_nodes.remove(node)
@@ -383,7 +388,6 @@ class ModuleHandler:
 						target.pastDependency(target, target_port)
 				break
 
-		code += "\troot.add([\n\t\t" + ",\n\t\t".join(variable_names) + "\n\t])\n\n"
 		code += "\troot.execute()\n"
 
 		file_path = self.write_path + "/main.py"
