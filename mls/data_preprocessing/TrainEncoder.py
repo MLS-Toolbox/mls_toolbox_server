@@ -1,6 +1,6 @@
-from mls.data_preprocessing import IDataPreprocessing
+from mls.data_preprocessing import DataPreProcessingStep
 
-class TrainEncoder(IDataPreprocessing):
+class TrainEncoder(DataPreProcessingStep):
     def __init__(self, columns, data, encoder):
         super().__init__()
         self.columns = columns

@@ -1,6 +1,6 @@
-from mls.data_transformation import IDataTransformation
+from mls.data_transformation import DataTransformationStep
 
-class SelectColumns(IDataTransformation):
+class SelectColumns(DataTransformationStep):
     def __init__(self, columns, origin):
         super().__init__()
         self.columns = columns

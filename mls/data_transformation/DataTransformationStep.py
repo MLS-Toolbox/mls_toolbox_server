@@ -1,5 +1,5 @@
 from mls.orchestration import Step
 
-class IModelTraining(Step):
-    def __init__(self) -> None:
+class DataTransformationStep(Step):
+    def __init__(self):
         super().__init__()

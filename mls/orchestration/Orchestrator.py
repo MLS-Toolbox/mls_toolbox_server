@@ -1,10 +1,16 @@
-from mls.orchestration import Step, Out, In
+from mls.orchestration import Out, In
 
-class Orchestrator(Step):
+class Orchestrator:
     def __init__(self, **inputs):
         super().__init__()
         self.steps = []
         self.inputs = inputs
+    
+    def set(self, port, value):
+        self.inputs[port] = value
+    
+    def get(self, port):
+        return self.outuputs[port]
     
     def add(self, steps):
         for step in steps:

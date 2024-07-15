@@ -1,6 +1,6 @@
-from mls.data_preprocessing import IDataPreprocessing
+from mls.data_preprocessing import DataPreProcessingStep
 
-class ReplaceNan(IDataPreprocessing):
+class ReplaceNan(DataPreProcessingStep):
     def __init__(self, value, origin):
         self.value = value
         self.origin = origin

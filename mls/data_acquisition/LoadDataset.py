@@ -1,8 +1,8 @@
-from mls.data_acquisition import IDataAcquisition
+from mls.data_acquisition import DataAcquisitionStep
 from mls.data_acquisition import DataFrame
-from mls.loaders import *
+from mls.data_acquisition.loaders import *
 
-class LoadDataset(IDataAcquisition):
+class LoadDataset(DataAcquisitionStep):
     def __init__(self, path : str, loader : str):
         super().__init__(),
         termination = path.split(".")[-1]

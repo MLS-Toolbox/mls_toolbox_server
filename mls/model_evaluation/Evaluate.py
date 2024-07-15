@@ -1,6 +1,6 @@
-from mls.model_evaluation import IModelEvaluation
+from mls.model_evaluation import ModelEvaluationStep
 
-class Evaluate(IModelEvaluation):
+class Evaluate(ModelEvaluationStep):
     def __init__(self, model, x_test, y_test):
         super().__init__()
 

@@ -1,6 +1,6 @@
-from mls.model_training import IModelTraining
+from mls.model_training import ModelTrainingStep
 
-class TrainModel(IModelTraining):
+class TrainModel(ModelTrainingStep):
     def __init__(self, epochs : int, bach_size : int, features, truth, optimizer, model) -> None:
         super().__init__()
 

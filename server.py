@@ -29,7 +29,6 @@ def add_message():
     shutil.copytree('mls', path+'/mls')
 
     shutil.make_archive(path_head, 'zip', path_head)
-    
 
     file = open(path_head+'.zip', 'rb')
     data = file.read()

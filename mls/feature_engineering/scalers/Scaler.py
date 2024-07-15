@@ -1,5 +1,5 @@
 import numpy as np
-from mls.scalers import IScaler
+from mls.feature_engineering.scalers import IScaler
 
 class Scaler(IScaler):
     def __init__(self, scaler) -> None:

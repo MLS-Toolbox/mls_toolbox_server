@@ -1,4 +1,4 @@
-from mls.scalers import Scaler
+from mls.feature_engineering.scalers import Scaler
 from sklearn.preprocessing import StandardScaler
 
 class Standard(Scaler):

@@ -1,6 +1,6 @@
-from mls.data_transformation import IDataTransformation
+from mls.data_transformation import DataTransformationStep
 
-class Join(IDataTransformation):
+class Join(DataTransformationStep):
     def __init__(self, left, right, on, how):
         super().__init__()
         self.left = left
