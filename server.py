@@ -21,7 +21,7 @@ def add_message():
     path = path_head + '/src'
     os.mkdir(path_head)
     os.mkdir(path)
-    module = ModuleHandler(content = content, nodes = availableNodes.getNodes(),write_path = path)
+    module = ModuleHandler(content = content, nodes = availableNodes.getNodes(), write_path = path)
 
     module.generateCode()
 
