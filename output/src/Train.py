@@ -1,4 +1,4 @@
-from mls.orchestration import Step, Out, In, Orchestrator
+from mls.orchestration import Out, In, Step, Orchestrator
 from mls.model_training.optimizers import Adam
 from mls.model_training import TrainModel
 from mls.model_training.models import LinearRegression
@@ -18,22 +18,16 @@ class Train(Step):
 		self.orchestrator.add(input_2)
 		
 		optimizer = Adam(
-			# 
-			description = '',
 			parameters = '',
 		)
 		self.orchestrator.add(optimizer)
 		
 		mlmodel = LinearRegression(
-			# 
-			description = '',
 			parameters = '',
 		)
 		self.orchestrator.add(mlmodel)
 		
 		train_model = TrainModel(
-			# 
-			description = '',
 			epochs = '',
 			bach_size = '',
 			features = (input, 'value'),

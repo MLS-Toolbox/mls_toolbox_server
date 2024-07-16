@@ -1,5 +1,5 @@
-from mls.orchestration import Step, Out, In, Orchestrator
-from mls.data_preprocessing import TrainScaler, ReplaceNan, TrainEncoder
+from mls.orchestration import Out, In, Step, Orchestrator
+from mls.data_preprocessing import TrainEncoder, ReplaceNan, TrainScaler
 from mls.data_transformation import DropColumns
 from mls.encoders import OneHotEncoder
 from mls.scalers import Standard
@@ -14,38 +14,29 @@ class DataPreProcessing(Step):
 		self.orchestrator.add(input)
 		
 		replace_nan = ReplaceNan(
-			# 
-			description = '',
 			value = '',
 			origin = (input, 'value'),
 		)
 		self.orchestrator.add(replace_nan)
 		
+		# dropped X columns
 		drop_columns = DropColumns(
-			# 
-			description = '',
 			columns = 'ID_x',
 			origin_table = (replace_nan, 'result'),
 		)
 		self.orchestrator.add(drop_columns)
 		
 		encoder = OneHotEncoder(
-			# 
-			description = '',
 			parmeters = '',
 		)
 		self.orchestrator.add(encoder)
 		
 		scaler = Standard(
-			# 
-			description = '',
 			parmeters = '',
 		)
 		self.orchestrator.add(scaler)
 		
 		trainencoder = TrainEncoder(
-			# 
-			description = '',
 			columns = '',
 			encoder = (encoder, 'encoder'),
 			data = (drop_columns, 'resulting_table'),
@@ -53,8 +44,6 @@ class DataPreProcessing(Step):
 		self.orchestrator.add(trainencoder)
 		
 		trainscaler = TrainScaler(
-			# 
-			description = '',
 			columns = '',
 			data = (trainencoder, 'out'),
 			scaler = (scaler, 'scaler'),

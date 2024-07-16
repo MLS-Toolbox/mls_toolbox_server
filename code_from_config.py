@@ -90,10 +90,14 @@ class Node:
 			return "# " + self.nodeName + " not implemented yet\n"
 		
 		final_code = ""
+		if "description" in self.params:
+			description = self.getParam("description")
+			if description is not None and len(description) > 0:
+				final_code += "# " + str(self.getParam("description")) + "\n"
 		final_code += self.variable_name + " = " + self.origin_label + "(\n"
 		for param in self.params:
 			if param == "description":
-				final_code += "\t# " + str(self.getParam(param)) + "\n"
+				continue
 			if ( "parameter" in self.origin ) and ( param == self.origin["parameter"] ):
 				continue
 			final_code += "\t" + param + " = '" + str(self.getParam(param)) + "',\n"

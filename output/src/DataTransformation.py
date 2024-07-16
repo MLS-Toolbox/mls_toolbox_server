@@ -1,5 +1,5 @@
-from mls.orchestration import StepManager, Step, Out, Orchestrator, In
-from mls.data_transformation import SplitTrainTest, SelectColumns
+from mls.orchestration import StepManager, In, Step, Out, Orchestrator
+from mls.data_transformation import SelectColumns, SplitTrainTest
 
 class DataTransformation(Step):
 	def __init__(self, **kwargs):
@@ -11,24 +11,18 @@ class DataTransformation(Step):
 		self.orchestrator.add(input)
 		
 		select_columns = SelectColumns(
-			# 
-			description = '',
 			columns = '',
 			origin_table = (input, 'value'),
 		)
 		self.orchestrator.add(select_columns)
 		
 		select_columns_2 = SelectColumns(
-			# 
-			description = '',
 			columns = '',
 			origin_table = (input, 'value'),
 		)
 		self.orchestrator.add(select_columns_2)
 		
 		split_train_test = SplitTrainTest(
-			# 
-			description = '',
 			train_percentage = '',
 			features = (select_columns, 'resulting_table'),
 			truth = (select_columns_2, 'resulting_table'),

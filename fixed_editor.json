@@ -228,7 +228,8 @@
                     "description": {
                         "type": "string",
                         "show": true,
-                        "isParam": "custom"
+                        "isParam": "custom",
+                        "value": "dropped X columns"
                     },
                     "columns": {
                         "type": "string",

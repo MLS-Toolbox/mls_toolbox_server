@@ -1,4 +1,4 @@
-from mls.orchestration import Step, Out, In, Orchestrator
+from mls.orchestration import Out, In, Step, Orchestrator
 from mls.model_evaluation import Evaluate
 
 class Evaluation(Step):
@@ -21,8 +21,6 @@ class Evaluation(Step):
 		self.orchestrator.add(input_3)
 		
 		evaluate = Evaluate(
-			# 
-			description = '',
 			model = (input, 'value'),
 			features = (input_2, 'value'),
 			truth = (input_3, 'value'),
