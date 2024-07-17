@@ -1,4 +1,4 @@
-from mls.orchestration import Out, In, Step, Orchestrator
+from mls.orchestration import In, Step, Orchestrator, Out
 from mls.model_training.optimizers import Adam
 from mls.model_training import TrainModel
 from mls.model_training.models import LinearRegression

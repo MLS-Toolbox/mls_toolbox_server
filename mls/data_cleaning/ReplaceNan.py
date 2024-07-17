@@ -1,10 +1,13 @@
-from mls.data_preprocessing import DataPreProcessingStep
+from mls.data_cleaning import DataCleaningStep
 
-class ReplaceNan(DataPreProcessingStep):
+class ReplaceNan(DataCleaningStep):
     def __init__(self, value, origin):
-        self.value = value
-        self.origin = origin
+        super().__init__(
+            origin = origin
+        )
 
+        self.value = value
+        
     def execute(self):
         origin, port = self.origin
         data = origin.get(port).data

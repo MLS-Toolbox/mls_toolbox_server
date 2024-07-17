@@ -1,5 +1,5 @@
-from mls.orchestration import StepManager, In, Step, Out, Orchestrator
-from mls.data_transformation import SelectColumns, SplitTrainTest
+from mls.orchestration import Orchestrator, Out, In, StepManager, Step
+from mls.data_transformation import SplitTrainTest, SelectColumns
 
 class DataTransformation(Step):
 	def __init__(self, **kwargs):

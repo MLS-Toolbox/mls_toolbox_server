@@ -1,5 +1,5 @@
 from mls.data_acquisition import LoadDataset
-from mls.orchestration import Out, Step, Orchestrator
+from mls.orchestration import Step, Orchestrator, Out
 
 class DataAcquisition(Step):
 	def __init__(self, **kwargs):

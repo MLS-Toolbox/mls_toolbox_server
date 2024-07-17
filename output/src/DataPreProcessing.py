@@ -1,5 +1,5 @@
-from mls.orchestration import Out, In, Step, Orchestrator
-from mls.data_preprocessing import TrainEncoder, ReplaceNan, TrainScaler
+from mls.orchestration import In, Step, Orchestrator, Out
+from mls.data_preprocessing import ReplaceNan, TrainScaler, TrainEncoder
 from mls.data_transformation import DropColumns
 from mls.encoders import OneHotEncoder
 from mls.scalers import Standard
@@ -29,6 +29,7 @@ class DataPreProcessing(Step):
 		encoder = OneHotEncoder(
 			parmeters = '',
 		)
+		
 		self.orchestrator.add(encoder)
 		
 		scaler = Standard(

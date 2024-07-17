@@ -1,4 +1,4 @@
-from mls.orchestration import Out, In, Step, Orchestrator
+from mls.orchestration import In, Step, Orchestrator, Out
 from mls.model_evaluation import Evaluate
 
 class Evaluation(Step):

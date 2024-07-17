@@ -1,7 +1,6 @@
 import numpy as np
-from mls.feature_engineering.scalers import ScalerStep
 
-class Scaler(ScalerStep):
+class Scaler:
     def __init__(self, scaler) -> None:
         """
         Initializes the class instance with a given scaler and column.

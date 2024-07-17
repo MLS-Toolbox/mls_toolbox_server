@@ -1,6 +1,6 @@
-from mls.data_preprocessing import DataPreProcessingStep
+from mls.feature_engineering import FeatureEngineeringStep
 
-class TrainScaler(DataPreProcessingStep):
+class TrainScaler(FeatureEngineeringStep):
     def __init__(self, columns, data, scaler):
         super().__init__()
         self.columns = columns

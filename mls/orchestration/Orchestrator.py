@@ -12,9 +12,8 @@ class Orchestrator:
     def get(self, port):
         return self.outuputs[port]
     
-    def add(self, steps):
-        for step in steps:
-            self.steps.append(step)
+    def add(self, step):
+        self.steps.append(step)
     
     def clear(self):
         self.steps = []

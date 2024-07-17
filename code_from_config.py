@@ -270,12 +270,11 @@ class Module:
 		return dvc_config
 
 class ModuleHandler:
-	def __init__(self, content, nodes, write_path  = "./output/src"):
+	def __init__(self, content, nodes ):
 		self.content = content
 		self.all_modules = dict()
 		self.all_nodes = dict()
 		self.available_nodes = nodes
-		self.write_path = write_path
 
 		## Creating all the modules
 		for module in self.content:
@@ -324,7 +323,7 @@ class ModuleHandler:
 			for node in module.nodes:
 				node.parent = module
 
-	def generatePackageCode(self):
+	def generatePackageCode(self, write_path  = "./output/src"):
 		root = self.all_modules['root']
 		packages = root.nodes
 
@@ -346,7 +345,7 @@ class ModuleHandler:
 			code += "\tdef execute(self):\n"
 			code += "\t\tself.orchestrator.execute()\n"
 
-			file_path = self.write_path + "/" + c_package.rName + ".py"
+			file_path = write_path + "/" + c_package.rName + ".py"
 			file = open(file_path, "w")
 			file.write(code)
 			file.close()
@@ -357,7 +356,7 @@ class ModuleHandler:
 			for source in this_package_node.dependencies:
 				modules_id_i_depend_on.add(source[0].id)
 
-	def generateMainCode(self):
+	def generateMainCode(self, write_path  = "./output/src"):
 		root = self.all_modules['root']
 		packages = root.nodes
 		code = "from mls.orchestration import Orchestrator\n"
@@ -394,15 +393,15 @@ class ModuleHandler:
 
 		code += "\troot.execute()\n"
 
-		file_path = self.write_path + "/main.py"
+		file_path = write_path + "/main.py"
 
 		file = open(file_path, "w")
 		file.write(code)
 		file.close()
 
-	def generateCode(self):
-		self.generatePackageCode()
-		self.generateMainCode()
+	def generateCode(self, write_path  = "./output/src"):
+		self.generatePackageCode(write_path)
+		self.generateMainCode(write_path)
 
 class NodesLoader:
 	def __init__(self, content):

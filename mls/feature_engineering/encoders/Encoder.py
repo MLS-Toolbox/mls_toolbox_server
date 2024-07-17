@@ -1,6 +1,4 @@
-from mls.feature_engineering.encoders import EncoderStep
-
-class Encoder(EncoderStep):
+class Encoder():
     def __init__(self, encoder) -> None:
         """
         Initializes the class instance with a given encoder.

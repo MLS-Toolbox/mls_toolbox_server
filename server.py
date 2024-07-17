@@ -3,29 +3,25 @@ from code_from_config import ModuleHandler, NodesLoader
 from flask_cors import cross_origin
 import os
 import shutil
-import json
 from fix_editor import fix_editor
 import uuid
 app = Flask(__name__)
 
-@app.route('/api/create_app', methods=['GET', 'POST'])
-@cross_origin()
-def add_message():
-    content = request.json
-    content = fix_editor(content)
-    nodes_config_path = 'nodes.json'
-    nodes_config = json.load(open(nodes_config_path))
-    availableNodes = NodesLoader(content = nodes_config['nodes'])
+def generate_code(content):
+    code = content["code"]
+    nodes = content["nodes"]
+    content = fix_editor(code)
+    availableNodes = NodesLoader(content = nodes)
     # generate random path for this request
     path_head = './'+ str(uuid.uuid4())
     path = path_head + '/src'
     os.mkdir(path_head)
     os.mkdir(path)
-    module = ModuleHandler(content = content, nodes = availableNodes.getNodes(), write_path = path)
+    module = ModuleHandler(content = content, nodes = availableNodes.getNodes())
 
-    module.generateCode()
+    module.generateCode(write_path = path)
 
-    # copy mls folder into path
+    # copy mls folder into path FIXME: add dependency checker
     shutil.copytree('mls', path+'/mls')
 
     shutil.make_archive(path_head, 'zip', path_head)
@@ -38,6 +34,13 @@ def add_message():
     shutil.rmtree(path_head)
 
     return data
+
+@app.route('/api/create_app', methods=['GET', 'POST'])
+@cross_origin()
+def add_message():
+    content = request.json
+    code = generate_code(content)
+    return code   
 
 @app.route('/', methods=['GET', 'POST'])
 @cross_origin()

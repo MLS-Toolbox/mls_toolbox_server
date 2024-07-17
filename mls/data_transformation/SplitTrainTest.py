@@ -1,6 +1,6 @@
 from mls.data_transformation import DataTransformationStep
 from sklearn.model_selection import train_test_split
-from mls.data_acquisition import DataFrame
+from mls.data_collection import DataFrame
 
 class SplitTrainTest(DataTransformationStep):
     def __init__(self, train_percentage : float, features, truth):
