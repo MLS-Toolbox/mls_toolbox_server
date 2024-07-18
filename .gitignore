@@ -26,4 +26,6 @@ replay_pid*
 *.zip
 *.pyc
 
-./*.json
+editor.json
+fixed_editor.json
+output/*
