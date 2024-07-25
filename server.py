@@ -7,14 +7,14 @@ app = Flask(__name__)
 @cross_origin()
 def request_app():
     # do a request to other flask app
-    target_url = "http://0.0.0.0:5050/api/create_app"
+    target_url = "http://localhost:5050/api/create_app"
     reponse = requests.request(
         method="POST",
         url=target_url,
         json=request.json,
         headers={'Content-Type': 'application/json'})
     print(reponse)
-    return reponse.text
+    return reponse.content
 
 
 @app.route('/', methods=['GET', 'POST'])
