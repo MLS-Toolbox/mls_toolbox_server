@@ -7,7 +7,7 @@ app = Flask(__name__)
 def request_app():
     # do a request to other flask app
     
-    target_url = "mls_code_generator:5050/api/create_app"
+    target_url = "http://mls_code_generator:5050/api/create_app"
     response = requests.request(
         method="POST",
         url =target_url,
@@ -25,7 +25,7 @@ def request_app():
 def test_request_app():
     reponse = requests.request(
         method="POST",
-        url='mls_code_generator:5050',
+        url='http://mls_code_generator:5050',
         headers=
             {
                 'Access-Control-Allow-Origin': '*'
