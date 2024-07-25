@@ -3,13 +3,13 @@ import requests
 from flask_cors import cross_origin
 app = Flask(__name__)
 
-@app.route('/api/create_app', methods=['GET'])
+@app.route('/api/create_app', methods=['GET', 'POST'])
 @cross_origin()
 def request_app():
     # do a request to other flask app
     target_url = "http://0.0.0.0:5050/api/create_app"
     reponse = requests.request(
-        method="GET",
+        method="POST",
         url=target_url,
         json=request.json,
         headers={'Content-Type': 'application/json'})
