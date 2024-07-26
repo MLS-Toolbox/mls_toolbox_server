@@ -33,6 +33,21 @@ def test_request_app():
         )
     return reponse.text
 
+@app.route('/api/get_config', methods=['GET', 'POST'])
+@cross_origin()
+def get_config():
+    target_url = "http://mls_code_generator:5050/api/get_config"
+    response = requests.request(
+        method="GET",
+        url =target_url,
+        headers =
+            {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*'
+            }
+        )
+    return response.content
+
 @app.route('/', methods=['GET', 'POST'])
 @cross_origin()
 def home():
