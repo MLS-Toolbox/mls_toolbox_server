@@ -9,6 +9,6 @@ COPY . /app
 
 ENV MLS_CODE_GENERATOR_URI="mls_code_generator"
 ENV MLS_CODE_GENERATOR_PORT="5050"
-
+ENV MLS_TOOLBOX_EXECUTION_MODE="prod"
 ENTRYPOINT ["python3"]
 CMD ["server.py"]

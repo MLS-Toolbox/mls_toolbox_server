@@ -1,13 +1,34 @@
-from flask import Flask, request
+""" server.py : Flask server for mls_toolbox. """
+
 import requests
-from flask_cors import cross_origin
+
+from flask import Flask, request
+from flask_cors import cross_origin, CORS
+from waitress import serve
+import os
+
 app = Flask(__name__)
+
 @app.route('/api/create_app', methods=['GET', 'POST'])
 @cross_origin()
 def request_app():
-    # do a request to other flask app
-    
-    target_url = "http://mls_code_generator:5050/api/create_app"
+    """
+    Handles incoming HTTP requests to the '/api/create_app' endpoint.
+
+    Supports both GET and POST methods.
+
+    Makes a POST request to the 'create_app' endpoint
+    with the provided JSON data and returns the response content.
+
+    Parameters:
+        None
+
+    Returns:
+        The content of the response from the target URL.
+    """
+
+    target_url = "http://" + os.getenv("MLS_CODE_GENERATOR_URI", "localhost") + ":" + \
+        os.getenv("MLS_CODE_GENERATOR_PORT", "5050") + "/api/create_app"
     response = requests.request(
         method="POST",
         url =target_url,
@@ -16,45 +37,92 @@ def request_app():
             {
                 'Content-Type': 'application/json',
                 'Access-Control-Allow-Origin': '*'
-            }
+            },
+        timeout=10
     )
     return response.content
 
 @app.route('/api/test_create_app', methods=['GET', 'POST'])
 @cross_origin()
 def test_request_app():
+    """
+    Handles incoming HTTP requests to the '/api/test_create_app' endpoint.
+
+    Supports both GET and POST methods.
+
+    Makes a POST request to the 'test_create_app' endpoint
+    with the provided JSON data and returns the response content.
+
+    Parameters:
+        None
+
+    Returns:
+        The content of the response from the target URL.
+    """
+
+    target_url = "http://" + os.getenv("MLS_CODE_GENERATOR_URI", "localhost") + ":" + \
+        os.getenv("MLS_CODE_GENERATOR_PORT", "5050")
+
     reponse = requests.request(
-        method="POST",
-        url='http://mls_code_generator:5050',
-        headers=
+        method = "POST",
+        url = target_url,
+        headers =
             {
                 'Access-Control-Allow-Origin': '*'
-            }
+            },
+        timeout = 10
         )
     return reponse.text
 
 @app.route('/api/get_config', methods=['GET', 'POST'])
 @cross_origin()
 def get_config():
-    target_url = "http://mls_code_generator:5050/api/get_config"
+    """
+    Handles incoming HTTP requests to the '/api/get_config' endpoint.
+
+    Supports both GET and POST methods.
+
+    Makes a GET request to the 'get_config' endpoint
+    and returns the response content.
+
+    Parameters:
+        None
+
+    Returns:
+        The content of the response from the target URL.
+    """
+    target_url = "http://" + os.getenv("MLS_CODE_GENERATOR_URI", "localhost") + ":" + \
+        os.getenv("MLS_CODE_GENERATOR_PORT", "5050") + "/api/get_config"
+
     response = requests.request(
-        method="GET",
-        url =target_url,
+        method = "GET",
+        url = target_url,
         headers =
             {
                 'Content-Type': 'application/json',
                 'Access-Control-Allow-Origin': '*'
-            }
+            },
+        timeout = 10
         )
     return response.content
 
 @app.route('/', methods=['GET', 'POST'])
 @cross_origin()
 def home():
+    """
+    Handles incoming HTTP requests to the '/' endpoint.
+
+    Supports both GET and POST methods.
+
+    Returns a simple 'hello' message.
+    """
     return 'hello from mls_toolbox_server'
 
 if __name__ == '__main__':
-    from flask_cors import CORS
     CORS(app, supports_credentials=True, origins=['*'])
     app.config["CORS_HEADERS"] = ["Content-Type", "X-Requested-With", "X-CSRFToken"]
-    app.run(host= '0.0.0.0', port= 5000, debug=True)
+    execution_mode = os.getenv("MLS_TOOLBOX_EXECUTION_MODE", "debug")
+    if execution_mode == "prod":
+        serve(app, host='0.0.0.0', port=5000)
+    else:
+        app.run(host= '0.0.0.0', port= 5000, debug=True)
