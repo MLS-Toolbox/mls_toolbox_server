@@ -125,7 +125,7 @@ def test_rate_app():
     """
 
     target_url = "http://" + os.getenv("MLS_CODE_ASSESS_URI", "localhost") + ":" + \
-        os.getenv("MLS_CODE_ASSESS_PORT", "5060") + "/api/test_rate_app"
+        os.getenv("MLS_CODE_ASSESS_PORT", "5060")
 
     response = requests.request(
         method = "GET",
@@ -187,8 +187,13 @@ def home():
 if __name__ == '__main__':
     CORS(app, supports_credentials=True, origins=['*'])
     app.config["CORS_HEADERS"] = ["Content-Type", "X-Requested-With", "X-CSRFToken"]
-    execution_mode = os.getenv("MLS_TOOLBOX_EXECUTION_MODE", "debug")
+    
+    execution_mode = os.getenv("EXECUTION_MODE", "debug")
+    
+    HOST = "0.0.0.0"
+    PORT = 5000
+    
     if execution_mode == "prod":
-        serve(app, host='0.0.0.0', port=5000)
+        serve(app, host = HOST, port = PORT)
     else:
-        app.run(host= '0.0.0.0', port= 5000, debug=True)
+        app.run(host = HOST , port = PORT, debug=True)
