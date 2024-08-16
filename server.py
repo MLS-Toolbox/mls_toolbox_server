@@ -74,72 +74,6 @@ def test_create_app():
         )
     return reponse.text
 
-@app.route('/api/rate_app', methods=['GET', 'POST'])
-@cross_origin()
-def rate_app():
-    """
-    Handles incoming HTTP requests to the '/api/rate_app' endpoint.
-
-    Supports both GET and POST methods.
-
-    Makes a POST request to the 'rate_app' endpoint
-    with the provided JSON data and returns the response content.
-
-    Parameters:
-        None
-
-    Returns:
-        The content of the response from the target URL.
-    """
-    target_url = "http://" + os.getenv("MLS_CODE_ASSESS_URI", "localhost") + ":" + \
-        os.getenv("MLS_CODE_ASSESS_PORT", "5060") + "/api/test_rate_app"
-    response = requests.request(
-        method="POST",
-        url = target_url,
-        json = request.json,
-        headers =
-            {
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*'
-            },
-        timeout=100
-    )
-    return response.content
-
-@app.route('/api/test_rate_app', methods=['GET', 'POST'])
-@cross_origin
-def test_rate_app():
-    """
-    Handles incoming HTTP requests to the '/api/test_rate_app' endpoint.
-
-    Supports both GET and POST methods.
-
-    Makes a GET request to the 'test_rate_app' endpoint
-    and returns the response content.
-
-    Parameters:
-        None
-
-    Returns:
-        The content of the response from the target URL.
-    """
-
-    target_url = "http://" + os.getenv("MLS_CODE_ASSESS_URI", "localhost") + ":" + \
-        os.getenv("MLS_CODE_ASSESS_PORT", "5060")
-
-    response = requests.request(
-        method = "GET",
-        url = target_url,
-        headers =
-            {
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*'
-            },
-        timeout = 10
-        )
-
-    return response.text
-
 @app.route('/api/get_config', methods=['GET', 'POST'])
 @cross_origin()
 def get_config():
@@ -172,6 +106,74 @@ def get_config():
         )
     return response.content
 
+
+@app.route('/api/rate_app', methods=['GET', 'POST'])
+@cross_origin()
+def rate_app():
+    """
+    Handles incoming HTTP requests to the '/api/rate_app' endpoint.
+
+    Supports both GET and POST methods.
+
+    Makes a POST request to the 'rate_app' endpoint
+    with the provided JSON data and returns the response content.
+
+    Parameters:
+        None
+
+    Returns:
+        The content of the response from the target URL.
+    """
+    target_url = "http://" + os.getenv("MLS_CODE_ASSESS_URI", "localhost") + ":" + \
+        os.getenv("MLS_CODE_ASSESS_PORT", "5060") + "/api/rate_app"
+    response = requests.request(
+        method="POST",
+        url = target_url,
+        data = request.get_data(),
+        headers =
+            {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*'
+            },
+        timeout=100
+    )
+    return response.content
+
+@app.route('/api/test_rate_app', methods=['GET', 'POST'])
+@cross_origin()
+def test_rate_app():
+    """
+    Handles incoming HTTP requests to the '/api/test_rate_app' endpoint.
+
+    Supports both GET and POST methods.
+
+    Makes a GET request to the 'test_rate_app' endpoint
+    and returns the response content.
+
+    Parameters:
+        None
+
+    Returns:
+        The content of the response from the target URL.
+    """
+    
+
+    target_url = "http://" + os.getenv("MLS_CODE_ASSESS_URI", "localhost") + ":" + \
+        os.getenv("MLS_CODE_ASSESS_PORT", "5060")
+
+    response = requests.request(
+        method = "GET",
+        url = target_url,
+        headers =
+            {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*'
+            },
+        timeout = 10
+        )
+
+    return response.text
+
 @app.route('/', methods=['GET', 'POST'])
 @cross_origin()
 def home():
@@ -196,4 +198,4 @@ if __name__ == '__main__':
     if execution_mode == "prod":
         serve(app, host = HOST, port = PORT)
     else:
-        app.run(host = HOST , port = PORT, debug=True)
+        app.run(host = HOST , port = PORT, debug = True)
