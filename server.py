@@ -132,12 +132,45 @@ def rate_app():
         data = request.get_data(),
         headers =
             {
-                'Content-Type': 'application/json',
+                'Content-Type': 'application/x-binary',
                 'Access-Control-Allow-Origin': '*'
             },
         timeout=100
     )
     return response.content
+
+@app.route('/api/get_report', methods=['GET', 'POST'])
+@cross_origin()
+def get_report():
+    """
+    Handles incoming HTTP requests to the '/api/get_report' endpoint.
+
+    Supports both GET and POST methods.
+
+    Makes a POST request to the 'get_report' endpoint
+    with the provided JSON data and returns the response content.
+
+    Parameters:
+        None
+
+    Returns:
+        The content of the response from the target URL.
+    """
+    target_url = "http://" + os.getenv("MLS_CODE_ASSESS_URI", "localhost") + ":" + \
+        os.getenv("MLS_CODE_ASSESS_PORT", "5060") + "/api/get_report?" + str(request.query_string, "utf-8")
+    response = requests.request(
+        method="POST",
+        url = target_url,
+        data = request.get_data(),
+        headers =
+            {
+                'Content-Type': 'application/x-binary',
+                'Access-Control-Allow-Origin': '*'
+            },
+        timeout=1000
+    )
+    return response.content
+
 
 @app.route('/api/test_rate_app', methods=['GET', 'POST'])
 @cross_origin()
