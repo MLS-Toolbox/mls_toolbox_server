@@ -106,6 +106,59 @@ def get_config():
         )
     return response.content
 
+@app.route('/api/get_base_editor', methods=['GET', 'POST'])
+@cross_origin()
+def get_base_editor():
+    target_url = "http://" + os.getenv("MLS_CODE_GENERATOR_URI", "localhost") + ":" + \
+        os.getenv("MLS_CODE_GENERATOR_PORT", "5050") + "/api/get_base_editor"
+
+    response = requests.request(
+        method = "GET",
+        url = target_url,
+        headers =
+            {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*'
+            },
+        timeout = 10
+        )
+    return response.content
+
+@app.route('/api/get_editor', methods=['GET', 'POST'])
+@cross_origin()
+def get_editor():
+    target_url = "http://" + os.getenv("MLS_CODE_GENERATOR_URI", "localhost") + ":" + \
+        os.getenv("MLS_CODE_GENERATOR_PORT", "5050") + "/api/get_editor?" + str(request.query_string, "utf-8")
+
+    response = requests.request(
+        method = "GET",
+        url = target_url,
+        headers =
+            {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*'
+            },
+        timeout = 10
+        )
+    return response.content
+
+@app.route('/api/get_available_editor', methods=['GET', 'POST'])
+@cross_origin()
+def get_available_editor():
+    target_url = "http://" + os.getenv("MLS_CODE_GENERATOR_URI", "localhost") + ":" + \
+        os.getenv("MLS_CODE_GENERATOR_PORT", "5050") + "/api/get_available_editor"
+
+    response = requests.request(
+        method = "GET",
+        url = target_url,
+        headers =
+            {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*'
+            },
+        timeout = 10
+        )
+    return response.content
 
 @app.route('/api/rate_app', methods=['GET', 'POST'])
 @cross_origin()
