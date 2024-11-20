@@ -128,17 +128,18 @@ def get_base_editor():
 @cross_origin()
 def get_editor():
     target_url = "http://" + os.getenv("MLS_CODE_GENERATOR_URI", "localhost") + ":" + \
-        os.getenv("MLS_CODE_GENERATOR_PORT", "5050") + "/api/get_editor?" + str(request.query_string, "utf-8")
-
+        os.getenv("MLS_CODE_GENERATOR_PORT", "5050") + "/api/get_editor"
+    
     response = requests.request(
-        method = "GET",
+        method = "POST",
         url = target_url,
         headers =
             {
                 'Content-Type': 'application/json',
                 'Access-Control-Allow-Origin': '*'
             },
-        timeout = 10
+        timeout = 10,
+        data = request.data
         )
     return response.content
 
